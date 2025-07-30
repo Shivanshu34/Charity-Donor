@@ -11,12 +11,14 @@ import {main} from './database/database.js';
 dotenv.config(); 
 
 const app = express();
+
 app.use(cors({
-  origin: "http://localhost:5173",  // your frontend origin
+  origin: [process.env.FRONTEND_URL || "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
 
 app.use(express.json());
 
@@ -48,8 +50,14 @@ app.get('/',(req,res)=>{
 
 main().catch(err => console.error('❌ DB connection failed', err));
 
-app.listen(process.env.PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${process.env.PORT}`)
-});
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+}
+// app.listen(process.env.PORT, () => {
+//     console.log(`🚀 Server running on http://localhost:${process.env.PORT}`)
+// });
 
 export default app;
