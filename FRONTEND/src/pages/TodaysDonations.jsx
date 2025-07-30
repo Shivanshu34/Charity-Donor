@@ -1,7 +1,7 @@
 // src/pages/TodaysDonations.jsx
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/auth.js";
 
 function isToday(dateStr) {
   const donationDate = new Date(dateStr);
@@ -20,7 +20,7 @@ function TodaysDonations() {
   useEffect(() => {
     if (user) {
       axios
-        .get(`http://localhost:4000/api/donations/all/${user.email}`) 
+        .get(`/api/donations/all/${user.email}`) 
         .then((res) => {
           const filtered = res.data.filter((donation) =>
             isToday(donation.createdAt)

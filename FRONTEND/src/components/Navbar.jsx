@@ -12,6 +12,11 @@ function Navbar() {
     navigate("/");
   };
 
+   const handleLogout2 = () => {
+    dispatch(logout());
+    navigate("/dashboard"); 
+  };
+
   return (
     <nav className="bg-white shadow p-4 flex justify-between items-center">
       <h1 className="text-xl font-bold text-green-600">NGO Charity</h1>
@@ -19,7 +24,12 @@ function Navbar() {
         <Link to="/" className="text-gray-700 hover:text-green-600">Home</Link>
         <Link to="/donate" className="text-gray-700 hover:text-green-600">{user ? "Donate": "DonateAnonymously"}</Link>
         <Link to="/contact" className="text-gray-700 hover:text-green-600">Contact</Link>
-
+        <button
+            onClick={handleLogout2}
+            className="text-gray-700 hover:text-green-600"
+        >
+          Dashboard
+        </button>
         {token && user ? (
           <>
             <button

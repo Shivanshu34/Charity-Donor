@@ -1,7 +1,7 @@
 // src/pages/AllDonations.jsx
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/auth.js";
 
 function AllDonations() {
   const user = useSelector((state) => state.user.user);
@@ -10,7 +10,7 @@ function AllDonations() {
   useEffect(() => {
     if (user) {
       axios
-        .get(`http://localhost:4000/api/donations/all/${user.email}`) 
+        .get(`/api/donations/all/${user.email}`) 
         .then((res) =>{
           //console.log(res.data);
            setDonations(res.data)

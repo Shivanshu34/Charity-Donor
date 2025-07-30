@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../store/adminSlice.js";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/auth.js";
 
 function AdminSignup() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ function AdminSignup() {
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:4000/api/auth/admin/register", {
+      const res = await axios.post("/api/auth/admin/register", {
         name,
         email,
         password,

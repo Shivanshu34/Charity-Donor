@@ -1,7 +1,7 @@
 // src/pages/AdminDashboard.jsx
 import { useEffect, useState } from "react";
 import axios from "../api/auth.js";
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux"; 
 
 const categories = ["Animal Protection", "Education", "Child Support", "Anti Drugs"];
 
