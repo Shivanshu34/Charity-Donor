@@ -13,12 +13,12 @@ dotenv.config();
 const app = express();
 
 // ✅ CORS Configuration
-const allowedOrigins = [
-  process.env.FRONTEND_URL || "http://localhost:5173", // your Netlify frontend
-];
+// const allowedOrigins = [
+//   process.env.FRONTEND_URL || "http://localhost:5173", // your Netlify frontend
+// ];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: ["https://full-stack-ngo-charity.netlify.app"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
