@@ -6,58 +6,57 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js'; 
 import authAdminRoutes from './routes/adminAuth.js';
-import {main} from './database/database.js';
+import { main } from './database/database.js';
 
-dotenv.config(); 
+dotenv.config();
 
 const app = express();
 
+// ✅ CORS Configuration
+const allowedOrigins = [
+  process.env.FRONTEND_URL || "http://localhost:5173", // your Netlify frontend
+];
+
 app.use(cors({
-  origin: [process.env.FRONTEND_URL || "http://localhost:5173"],
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  credentials: true,
 }));
 
+// ✅ Handle preflight OPTIONS requests for all routes
+app.options('*', cors());
 
 app.use(express.json());
 
-try {
-  app.use('/api/auth', authRoutes); // likely this one has the typo
-} catch (e) {
-  console.error('Error in user Routes:', e.message);
-}
-
-try {
-  app.use('/api/auth/admin', authAdminRoutes); // likely this one has the typo 
-} catch (e) {  
-  console.error('Error in admin Routes:', e.message);  
-}
-
+// 🧩 Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/auth/admin', authAdminRoutes);
 app.use('/api/donations', donationRoutes);
-app.use('/api/admin/donations', adminDonationRoutes);  
+app.use('/api/admin/donations', adminDonationRoutes);
 
-app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({ message: err.message }); 
+// ✅ Default health check route
+app.get('/', (req, res) => {
+  res.send({
+    activeStatus: true,
+    error: false,
+  });
 });
 
-app.get('/',(req,res)=>{
-  res.send({
-    activeStatus:true,
-    error:false,
-  })
-})
+// 🛠 Error Handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({ message: err.message });
+});
 
+// ✅ Connect DB
 main().catch(err => console.error('❌ DB connection failed', err));
 
+// ✅ Start Server (only locally)
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
   });
 }
-// app.listen(process.env.PORT, () => {
-//     console.log(`🚀 Server running on http://localhost:${process.env.PORT}`)
-// });
 
 export default app;
