@@ -12,22 +12,8 @@ dotenv.config();
 
 const app = express();
 
-// ✅ CORS Setup — safe for both dev & prod
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://full-stack-ngo-charity.netlify.app",
-  process.env.FRONTEND_URL,
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: ["https://full-stack-ngo-charity.netlify.app/"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
